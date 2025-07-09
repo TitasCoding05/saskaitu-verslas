@@ -1,0 +1,85 @@
+/* Drag and Drop Performance Optimizations */
+
+/* Optimize dragged elements */
+.drag-item-dragging {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  pointer-events: none;
+  position: relative;
+  z-index: 1000;
+}
+
+/* Smooth placeholder animations */
+.drag-placeholder {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Optimize drag over states */
+.drag-item-over {
+  will-change: transform, background-color, border-color;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Prevent text selection during drag */
+.drag-container {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Smooth transitions for all drag states */
+.drag-item {
+  transition: transform 0.15s ease-out, 
+              opacity 0.15s ease-out, 
+              background-color 0.15s ease-out,
+              border-color 0.15s ease-out,
+              box-shadow 0.15s ease-out;
+}
+
+/* Hardware acceleration for better performance */
+.drag-item:hover {
+  transform: translateZ(0);
+}
+
+/* Reduce layout thrashing */
+.drag-list {
+  contain: layout style paint;
+}
+
+/* Optimize grip handle */
+.drag-grip {
+  cursor: grab;
+  touch-action: none;
+}
+
+.drag-grip:active {
+  cursor: grabbing;
+}
+
+/* Mobile touch optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .drag-item {
+    /* Slightly longer transitions on mobile for better feedback */
+    transition-duration: 0.2s;
+  }
+  
+  .drag-placeholder {
+    /* More visible placeholder on mobile */
+    height: 3px;
+    background: linear-gradient(90deg, transparent, #3b82f6, transparent);
+  }
+}
+
+/* Reduce motion for users who prefer it */
+@media (prefers-reduced-motion: reduce) {
+  .drag-item,
+  .drag-placeholder {
+    transition: none;
+    animation: none;
+  }
+}
